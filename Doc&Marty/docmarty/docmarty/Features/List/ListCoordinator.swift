@@ -22,7 +22,13 @@ final class ListCoordinator: Coordinator {
     
     func start() {
         
-        let dependencies = ListViewModel.Dependencies()
+        let client = APIClient(withSession: .shared)
+        let decoder = JSONDecoder()
+        
+        let service = ListService(client: client, decoder: decoder)
+        let adapter = ListRequestAdapter(service: service)
+        
+        let dependencies = ListViewModel.Dependencies(adapter: adapter)
         let viewModel = ListViewModel(dependencies: dependencies)
         let viewController = ListViewController(viewModel: viewModel)
         

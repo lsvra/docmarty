@@ -1,0 +1,19 @@
+/* 
+  Localizable.strings
+  docmarty
+
+  Created by Luís Vieira on 06/04/2020.
+  Copyright © 2020 lsvra. All rights reserved.
+*/
+
+//General
+"app_name" = "Doc&Marty";
+
+//Errors - Title
+"error_title" = "Error";
+
+//Errors - Message
+"error_message_unknown" = "An error has ocurred.";
+
+//Errors - Action
+"error_action_ok" = "Ok";

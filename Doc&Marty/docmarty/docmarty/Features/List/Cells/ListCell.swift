@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class ListCell: UICollectionViewCell {
     
@@ -20,6 +21,10 @@ final class ListCell: UICollectionViewCell {
             static var cornerRadius: CGFloat = 8.0
             static var fontSize: CGFloat = 26.0
         }
+        
+        enum Animation {
+            static var fadeInTime: Double = 0.3
+        }
     }
     
     // MARK: Lifecycle
@@ -30,7 +35,9 @@ final class ListCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        titleLabel.text = nil
         imageView.image = nil
+        imageView.kf.cancelDownloadTask()
     }
 }
 
@@ -43,7 +50,9 @@ private extension ListCell {
         contentView.layer.masksToBounds = true
         
         titleLabel.font = .boldSystemFont(ofSize: Constants.Layout.fontSize)
-        titleLabel.textColor = .labelPrimary
+        titleLabel.textColor = .labelSecondary
+        
+        imageView.contentMode = .scaleAspectFill
     }
 }
 
@@ -54,6 +63,12 @@ extension ListCell: NibCreator {}
 extension ListCell: ConfigurableCell {
     
     func configure(viewModel: ListCellViewModel) {
+        
         titleLabel.text = viewModel.title
+        
+        imageView.kf.setImage(with: viewModel.imageURL,
+                              placeholder: UIImage.placeholder,
+                              options: [.transition(.fade(Constants.Animation.fadeInTime))])
+
     }
 }

@@ -38,9 +38,10 @@ final class ListViewController: UIViewController {
     }
     
     // MARK: Methods
-    
     private func setupView() {
         view.backgroundColor = .backgroundPrimary
+        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor : UIColor.labelPrimary]
+        navigationController?.navigationBar.barTintColor = .backgroundSecondary
     }
     
     private func setUpCollectionView() {
@@ -54,11 +55,23 @@ final class ListViewController: UIViewController {
 
     private func setupBindings() {
         
+        let onTitleLoaded = { [weak self] (title: String) in
+            guard let self = self else { return }
+            self.navigationItem.title = title
+        }
+        
         let onDataLoaded = { [weak self] in
             guard let self = self else { return }
             self.collectionView.reloadData()
         }
         
-        viewModel.bindings = ListViewModel.Bindings(onDataLoaded: onDataLoaded)
+        let onError = { [weak self] (error: ServiceError) in
+            guard let self = self else { return }
+            self.displayError(title: error.title, message: error.message)
+        }
+        
+        viewModel.bindings = ListViewModel.Bindings(onTitleLoaded: onTitleLoaded,
+                                                    onDataLoaded: onDataLoaded,
+                                                    onError: onError)
     }
 }

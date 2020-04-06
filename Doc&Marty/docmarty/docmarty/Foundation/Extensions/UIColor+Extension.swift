@@ -14,6 +14,10 @@ extension UIColor {
         return UIColor(named: "BackgroundPrimary")!
     }
     
+    static var backgroundSecondary: UIColor {
+        return UIColor(named: "BackgroundSecondary")!
+    }
+    
     static var labelPrimary: UIColor {
         return UIColor(named: "LabelPrimary")!
     }

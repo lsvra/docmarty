@@ -16,4 +16,11 @@ extension ListViewController: UICollectionViewDelegate {
         
         viewModel.didSelectItem(at: indexPath)
     }
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        willDisplay cell: UICollectionViewCell,
+                        forItemAt indexPath: IndexPath) {
+        
+        viewModel.willDisplayCell(at: indexPath)
+    }
 }

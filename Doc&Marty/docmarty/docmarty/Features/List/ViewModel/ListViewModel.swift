@@ -7,36 +7,98 @@
 //
 
 import Foundation
+import Kingfisher
 
 final class ListViewModel: ViewModel {
     
+    // MARK: Properties
     private weak var coordinator: ListCoordinatorDelegate?
     
-    // MARK: Properties
     struct Dependencies {
-        //TBD
+        let adapter: ListRequestAdapterProtocol
     }
     
     struct Bindings {
+        let onTitleLoaded: (String) -> Void
         let onDataLoaded: () -> Void
+        let onError: (ServiceError) -> Void?
     }
     
     private enum Constants {
         
         enum Section {
-            static let numberOfSections = 1
+            static let numberOfSections: Int = 1
+        }
+        
+        enum Loader {
+            static let newItemsThreshold: Int = 4
+        }
+        
+        enum Localization {
+            static var title: String = "app_name"
         }
     }
-
+    
+    private enum State {
+        case initial
+        case loading
+        case success
+        case failure
+    }
+    
     var dependencies: Dependencies
     var bindings: Bindings?
     
-    private var items: [ConfigurableItem]
+    private var items: [ConfigurableItem] = []
+    private var currentPage: Int = 1
+    private var totalPages: Int = 0
+    private var state: State = .initial
     
     // MARK: Lifecycle
     required init(dependencies: Dependencies) {
         self.dependencies = dependencies
-        items = []
+    }
+    
+    // MARK: Methods
+    private func loadCharaters(page: Int) {
+        
+        dependencies.adapter.allCharacters(page: page) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case let .success(data): self.handleSuccess(data)
+            case let .failure(error): self.handleError(error)
+            }
+        }
+    }
+    
+    private func handleSuccess(_ data: ListData) {
+        
+        totalPages = data.totalPages
+    
+        prefetch(items: data.items)
+        items.append(contentsOf: data.items)
+        
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.bindings?.onDataLoaded()
+        }
+    }
+    
+    private func handleError(_ error: ServiceError) {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.bindings?.onError(error)
+        }
+    }
+    
+    private func prefetch(items: [ConfigurableItem]) {
+        
+        let urlsToPrefetch = items.reduce([]) { (urls, item) -> [URL?] in
+            guard let item = item as? Prefetchable else { return [] }
+            return item.urlsToPrefetch
+        }.compactMap { $0 }
+        
+        ImagePrefetcher(urls: urlsToPrefetch).start()
     }
 }
 
@@ -44,7 +106,8 @@ final class ListViewModel: ViewModel {
 extension ListViewModel {
     
     func loadData() {
-        bindings?.onDataLoaded()
+        bindings?.onTitleLoaded(Constants.Localization.title.localized())
+        loadCharaters(page: currentPage)
     }
     
     func numberOfSections() -> Int {
@@ -58,6 +121,18 @@ extension ListViewModel {
     
     func configuratorForItem(at indexPath: IndexPath) -> CellConfigurator? {
         return items[indexPath.row].configurator
+    }
+    
+    func willDisplayCell(at indexPath: IndexPath) {
+        
+        guard
+            !items.isEmpty,
+            indexPath.row == items.count - Constants.Loader.newItemsThreshold,
+            currentPage < totalPages
+            else { return }
+
+        currentPage += 1
+        loadCharaters(page: currentPage)
     }
     
     func didSelectItem(at indexPath: IndexPath) {

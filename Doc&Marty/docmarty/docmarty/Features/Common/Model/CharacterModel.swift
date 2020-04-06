@@ -12,8 +12,8 @@ struct CharacterModel: Decodable {
     let name: String
     let gender: String
     let image: String
-    let episodes: [String]?
-    let location: LocationModel
+    let episode: [String]
+    let location: LocationModel?
 }
 
 

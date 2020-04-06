@@ -12,7 +12,7 @@ protocol ListRequestAdapterProtocol {
     func allCharacters(page: Int, completion: @escaping (Result<ListData, ServiceError>) -> Void)
 }
 
-final class ListRequestAdapter: ListRequestAdapterProtocol {
+final class ListRequestAdapter {
     
     // MARK: Properties
     private var service: ListService
@@ -30,12 +30,32 @@ final class ListRequestAdapter: ListRequestAdapterProtocol {
                                      imageURL: URL(string: character.image))
         }
         
-        return ListData(items: items, totalPages: data.info.pages)
+        let detailItems = data.results.map { character -> DetailItemData in
+          
+            let imageURL = URL(string: character.image)
+            
+            var locationURL: URL?
+            if let url = character.location?.url {
+                locationURL = URL(string: url)
+            }
+            
+            return DetailItemData(imageURL: imageURL,
+                                  name: character.name,
+                                  gender: character.gender,
+                                  numberOfEpisodes: character.episode.count,
+                                  locationURL: locationURL,
+                                  locationName: character.location?.name,
+                                  locationType: character.location?.type)
+        }
+        
+        return ListData(items: items,
+                        detailItems: detailItems,
+                        totalPages: data.info.pages)
     }
 }
 
-// MARK: Public Methods
-extension ListRequestAdapter {
+// MARK: ListRequestAdapterProtocol
+extension ListRequestAdapter: ListRequestAdapterProtocol {
     
     func allCharacters(page: Int, completion: @escaping (Result<ListData, ServiceError>) -> Void) {
         

@@ -31,7 +31,7 @@ enum Endpoint {
         }
     }
     
-    private var queryItems: [URLQueryItem] {
+    private var queryItems: [URLQueryItem]? {
         
         switch self {
         case .listCharacters(let page):

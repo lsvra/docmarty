@@ -6,12 +6,8 @@
 //  Copyright © 2020 lsvra. All rights reserved.
 //
 
-protocol ListDataProtocol {
-    var items: [ConfigurableItem] { get }
-    var totalPages: Int { get }
-}
-
-struct ListData: ListDataProtocol {
+struct ListData {
     let items: [ConfigurableItem]
+    let detailItems: [DetailItemData]
     let totalPages: Int
 }

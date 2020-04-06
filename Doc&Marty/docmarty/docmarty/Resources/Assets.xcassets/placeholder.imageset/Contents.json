@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "woocommerce-placeholder-600x600.png",
+      "filename" : "Placeholder.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
@@ -12,7 +12,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "woocommerce-placeholder-600x600-2.png",
+      "filename" : "Placeholder_dark.png",
       "idiom" : "universal",
       "scale" : "1x"
     },

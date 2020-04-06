@@ -33,8 +33,8 @@ final class AppCoordinator: Coordinator {
 extension AppCoordinator {
     
     private func openList(){
-        let listCoordinator = ListCoordinator(navigation: rootViewController)
-        children.append(listCoordinator)
-        listCoordinator.start()
+        let charactersCoordinator = CharactersCoordinator(navigation: rootViewController)
+        children.append(charactersCoordinator)
+        charactersCoordinator.start()
     }
 }

@@ -12,7 +12,7 @@ protocol ListServiceProtocol {
     func allCharacters(page: Int, completion: @escaping (Result<ListModel, ServiceError>) -> Void)
 }
 
-final class ListService: ListServiceProtocol {
+final class ListService {
     
     // MARK: Properties
     private let client: RequestClient
@@ -25,8 +25,8 @@ final class ListService: ListServiceProtocol {
     }
 }
 
-// MARK: Public Methods
-extension ListService {
+// MARK: ListServiceProtocol
+extension ListService: ListServiceProtocol {
     
     func allCharacters(page: Int, completion: @escaping (Result<ListModel, ServiceError>) -> Void) {
         

@@ -10,9 +10,10 @@ import Foundation
 
 protocol RequestClient {
     func request(endpoint: Endpoint, completion: @escaping (Result<Data, Error>) -> Void)
+    func request(url: URL, completion: @escaping (Result<Data, Error>) -> Void)
 }
 
-final class APIClient: RequestClient {
+final class APIClient {
     
     // MARK: Properties
     private let session: URLSession
@@ -21,11 +22,18 @@ final class APIClient: RequestClient {
     init(withSession session: URLSession) {
         self.session = session
     }
+}
+
+// MARK: RequestClient
+extension APIClient: RequestClient {
     
-    // MARK: Methods
     func request(endpoint: Endpoint, completion: @escaping (Result<Data, Error>) -> Void) {
         
         guard let url = endpoint.url else { return }
+        request(url: url, completion: completion)
+    }
+    
+    func request(url: URL, completion: @escaping (Result<Data, Error>) -> Void) {
         
         let request = URLRequest(url: url)
         
@@ -47,3 +55,4 @@ final class APIClient: RequestClient {
         task.resume()
     }
 }
+

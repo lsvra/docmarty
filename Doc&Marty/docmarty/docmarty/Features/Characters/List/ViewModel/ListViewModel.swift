@@ -11,11 +11,10 @@ import Kingfisher
 
 final class ListViewModel: ViewModel {
     
-    // MARK: Properties
-    private weak var coordinator: ListCoordinatorDelegate?
-    
+    // MARK: Properties    
     struct Dependencies {
         let adapter: ListRequestAdapterProtocol
+        weak var coordinator: CharactersCoordinatorDelegate?
     }
     
     struct Bindings {
@@ -35,24 +34,17 @@ final class ListViewModel: ViewModel {
         }
         
         enum Localization {
-            static var title: String = "app_name"
+            static var title: String = "character_list_title"
         }
-    }
-    
-    private enum State {
-        case initial
-        case loading
-        case success
-        case failure
     }
     
     var dependencies: Dependencies
     var bindings: Bindings?
     
     private var items: [ConfigurableItem] = []
+    private var detailItems: [DetailItemData] = []
     private var currentPage: Int = 1
     private var totalPages: Int = 0
-    private var state: State = .initial
     
     // MARK: Lifecycle
     required init(dependencies: Dependencies) {
@@ -76,7 +68,9 @@ final class ListViewModel: ViewModel {
         totalPages = data.totalPages
     
         prefetch(items: data.items)
+        
         items.append(contentsOf: data.items)
+        detailItems.append(contentsOf: data.detailItems)
         
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
@@ -106,7 +100,7 @@ final class ListViewModel: ViewModel {
 extension ListViewModel {
     
     func loadData() {
-        bindings?.onTitleLoaded(Constants.Localization.title.localized())
+        bindings?.onTitleLoaded(Constants.Localization.title.localized)
         loadCharaters(page: currentPage)
     }
     
@@ -136,6 +130,8 @@ extension ListViewModel {
     }
     
     func didSelectItem(at indexPath: IndexPath) {
-        //TBD
+        
+        let data = detailItems[indexPath.row]
+        dependencies.coordinator?.openDetail(withData: data)
     }
 }

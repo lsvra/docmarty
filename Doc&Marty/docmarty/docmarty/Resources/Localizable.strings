@@ -17,3 +17,12 @@
 
 //Errors - Action
 "error_action_ok" = "Ok";
+
+//Character - List
+"character_list_title" = "Characters";
+
+//Character - Detail
+"character_detail_description_name" = "Meet";
+"character_detail_description_gender" = "A";
+"character_detail_description_number_of_episodes" = "Total Appearances:";
+"character_detail_description_location_name" = "That lives in";

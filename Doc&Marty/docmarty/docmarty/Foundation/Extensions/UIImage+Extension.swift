@@ -13,4 +13,8 @@ extension UIImage {
     static var placeholder: UIImage {
         return UIImage(named: "Placeholder")!
     }
+    
+    static var offlineIcon: UIImage {
+        return UIImage(named: "OfflineIcon")!
+    }
 }

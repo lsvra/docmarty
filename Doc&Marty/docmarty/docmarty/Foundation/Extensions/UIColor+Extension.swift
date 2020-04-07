@@ -25,4 +25,8 @@ extension UIColor {
     static var labelSecondary: UIColor {
         return UIColor(named: "LabelSecondary")!
     }
+    
+    static var fillPrimary: UIColor {
+        return UIColor(named: "FillPrimary")!
+    }
 }

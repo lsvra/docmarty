@@ -21,7 +21,7 @@ final class ListViewController: UIViewController {
         let searchController = UISearchController(searchResultsController: nil)
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.delegate = self
-        searchController.searchBar.tintColor = .labelPrimary
+        searchController.searchBar.tintColor = .fillPrimary
         
         return searchController
     }()
@@ -70,23 +70,42 @@ final class ListViewController: UIViewController {
     
     private func setupBindings() {
         
+        let onLoading = { [weak self] in
+            
+            guard let self = self else { return }
+            self.toggleLoadingScreen(isLoading: true)
+        }
+        
         let onTitleLoaded = { [weak self] (title: String) in
+            
             guard let self = self else { return }
             self.navigationItem.title = title
         }
         
         let onDataLoaded = { [weak self] in
+            
             guard let self = self else { return }
+            
             self.collectionView.reloadData()
+            self.toggleLoadingScreen(isLoading: false)
         }
         
         let onError = { [weak self] (error: ServiceError) in
+            
             guard let self = self else { return }
-            self.displayError(title: error.title, message: error.message)
+            self.displayError(title: error.title.localized, message: error.message.localized)
         }
         
-        viewModel.bindings = ListViewModel.Bindings(onTitleLoaded: onTitleLoaded,
+        let onNetworkStatusDidChange = { [weak self] (isOnline: Bool) in
+            
+            guard let self = self else { return }
+            self.toggleOfflineScreen(isOnline: isOnline)
+        }
+        
+        viewModel.bindings = ListViewModel.Bindings(onLoading: onLoading,
+                                                    onTitleLoaded: onTitleLoaded,
                                                     onDataLoaded: onDataLoaded,
-                                                    onError: onError)
+                                                    onError: onError,
+                                                    onNetworkStatusDidChange: onNetworkStatusDidChange)
     }
 }

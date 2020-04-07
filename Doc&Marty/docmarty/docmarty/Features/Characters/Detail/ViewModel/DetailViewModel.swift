@@ -14,13 +14,16 @@ final class DetailViewModel: ViewModel {
     struct Dependencies {
         let data: DetailItemData
         let adapter: DetailRequestAdapterProtocol
+        let reachability: Reachability?
         weak var coordinator: CharactersCoordinatorDelegate?
     }
     
     struct Bindings {
+        let onLoading: () -> Void
         let onTitleLoaded: (String) -> Void
         let onDataLoaded: (Details) -> Void
         let onError: (ServiceError) -> Void
+        let onNetworkStatusDidChange: (_ inOnline: Bool) -> Void
     }
     
     private enum Constants {
@@ -40,12 +43,21 @@ final class DetailViewModel: ViewModel {
     
     // MARK: Lifecycle
     required init(dependencies: Dependencies) {
+        
         self.dependencies = dependencies
         self.data = dependencies.data
+        
+        startNetworkUpdates()
+    }
+    
+    deinit {
+        stopNetworkUpdates()
     }
     
     // MARK: Methods
     private func loadLocation(url: URL) {
+        
+        bindings?.onLoading()
         
         dependencies.adapter.location(url: url) { [weak self] result in
             guard let self = self else { return }
@@ -106,5 +118,18 @@ extension DetailViewModel {
         
         guard let url = data.locationURL else { return }
         loadLocation(url: url)
+    }
+}
+
+// MARK: NetworkObserver
+extension DetailViewModel: NetworkObserver {
+    
+    var reachability: Reachability? {
+        dependencies.reachability
+    }
+    
+    @objc func networkStatusDidChange() {
+        guard let isOnline = reachability?.isConnectedToNetwork else { return }
+        bindings?.onNetworkStatusDidChange(isOnline)
     }
 }

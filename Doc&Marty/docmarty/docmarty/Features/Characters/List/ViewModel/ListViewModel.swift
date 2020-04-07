@@ -14,13 +14,16 @@ final class ListViewModel: ViewModel {
     // MARK: Properties    
     struct Dependencies {
         let adapter: ListRequestAdapterProtocol
+        let reachability: Reachability?
         weak var coordinator: CharactersCoordinatorDelegate?
     }
     
     struct Bindings {
-        let onTitleLoaded: (String) -> Void
+        let onLoading: () -> Void
+        let onTitleLoaded: (_ title: String) -> Void
         let onDataLoaded: () -> Void
-        let onError: (ServiceError) -> Void?
+        let onError: (ServiceError) -> Void
+        let onNetworkStatusDidChange: (_ inOnline: Bool) -> Void
     }
     
     private enum Constants {
@@ -55,13 +58,25 @@ final class ListViewModel: ViewModel {
     
     private var isFiltering: Bool = false
     
+    private var alreadyDidFirstLoad: Bool {
+        return !results.items.isEmpty
+    }
+    
     // MARK: Lifecycle
     required init(dependencies: Dependencies) {
+        
         self.dependencies = dependencies
+        startNetworkUpdates()
+    }
+    
+    deinit {
+        stopNetworkUpdates()
     }
     
     // MARK: Methods
     private func loadCharaters(page: Int? = nil, name: String? = nil) {
+        
+        bindings?.onLoading()
         
         dependencies.adapter.characters(page: page, name: name) { [weak self] result in
             guard let self = self else { return }
@@ -125,6 +140,9 @@ final class ListViewModel: ViewModel {
                                        currentPage: Int,
                                        totalPages: Int) -> Bool {
         
+        
+        guard reachability?.isConnectedToNetwork ?? false else { return false }
+        
         return !items.isEmpty &&
             indexPath.row == items.count - Constants.Loader.newItemsThreshold &&
             currentPage < totalPages
@@ -137,6 +155,14 @@ extension ListViewModel {
     func loadData() {
         
         bindings?.onTitleLoaded(Constants.Localization.title.localized)
+        
+        let isOnline = reachability?.isConnectedToNetwork ?? false
+        
+        guard isOnline else {
+            bindings?.onNetworkStatusDidChange(isOnline)
+            return
+        }
+        
         loadCharaters()
     }
     
@@ -205,5 +231,24 @@ extension ListViewModel {
         let data = isFiltering ? filteredResults.detailItems[indexPath.row] : results.detailItems[indexPath.row]
         
         dependencies.coordinator?.openDetail(withData: data)
+    }
+}
+
+// MARK: NetworkObserver
+extension ListViewModel: NetworkObserver {
+    
+    var reachability: Reachability? {
+        dependencies.reachability
+    }
+    
+    @objc func networkStatusDidChange() {
+        
+        guard let isOnline = reachability?.isConnectedToNetwork else { return }
+        
+        bindings?.onNetworkStatusDidChange(isOnline)
+        
+        if !alreadyDidFirstLoad {
+            loadData()
+        }
     }
 }

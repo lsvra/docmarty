@@ -73,12 +73,20 @@ final class DetailViewController: UIViewController {
     
     private func setupBindings() {
         
+        let onLoading = { [weak self] in
+            
+            guard let self = self else { return }
+            self.toggleLoadingScreen(isLoading: true)
+        }
+        
         let onTitleLoaded = { [weak self] (title: String) in
+            
             guard let self = self else { return }
             self.navigationItem.title = title
         }
         
         let onDataLoaded = { [weak self] (details: Details) in
+            
             guard let self = self else { return }
             
             self.imageView.kf.setImage(with: details.imageURL,
@@ -93,15 +101,26 @@ final class DetailViewController: UIViewController {
                 self.locationLabel.text = location
                 self.locationLabel.isHidden = false
             }
+            
+            self.toggleLoadingScreen(isLoading: false)
         }
         
         let onError = { [weak self] (error: ServiceError) in
+            
             guard let self = self else { return }
             self.displayError(title: error.title, message: error.message)
         }
         
-        viewModel.bindings = DetailViewModel.Bindings(onTitleLoaded: onTitleLoaded,
+        let onNetworkStatusDidChange = { [weak self] (isOnline: Bool) in
+            
+            guard let self = self else { return }
+            self.toggleOfflineScreen(isOnline: isOnline)
+        }
+        
+        viewModel.bindings = DetailViewModel.Bindings(onLoading: onLoading,
+                                                      onTitleLoaded: onTitleLoaded,
                                                       onDataLoaded: onDataLoaded,
-                                                      onError: onError)
+                                                      onError: onError,
+                                                      onNetworkStatusDidChange: onNetworkStatusDidChange)
     }
 }

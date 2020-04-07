@@ -24,7 +24,11 @@ final class CharactersCoordinator {
         let service = ListService(client: client, decoder: decoder)
         let adapter = ListRequestAdapter(service: service)
         
-        let dependencies = ListViewModel.Dependencies(adapter: adapter, coordinator: self)
+        let reachability = try? Reachability()
+        
+        let dependencies = ListViewModel.Dependencies(adapter: adapter,
+                                                      reachability: reachability,
+                                                      coordinator: self)
         
         let viewModel = ListViewModel(dependencies: dependencies)
         let viewController = ListViewController(viewModel: viewModel)
@@ -45,7 +49,12 @@ final class CharactersCoordinator {
         let service = DetailService(client: client, decoder: decoder)
         let adapter = DetailRequestAdapter(service: service)
         
-        let dependencies = DetailViewModel.Dependencies(data: data, adapter: adapter, coordinator: self)
+        let reachability = try? Reachability()
+        
+        let dependencies = DetailViewModel.Dependencies(data: data,
+                                                        adapter: adapter,
+                                                        reachability: reachability,
+                                                        coordinator: self)
         
         let viewModel = DetailViewModel(dependencies: dependencies)
         let viewController = DetailViewController(viewModel: viewModel)

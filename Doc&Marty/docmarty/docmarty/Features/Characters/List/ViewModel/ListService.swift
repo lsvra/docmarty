@@ -9,7 +9,7 @@
 import Foundation
 
 protocol ListServiceProtocol {
-    func allCharacters(page: Int, completion: @escaping (Result<ListModel, ServiceError>) -> Void)
+    func characters(page: Int?, name: String?, completion: @escaping (Result<ListModel, ServiceError>) -> Void)
 }
 
 final class ListService {
@@ -28,9 +28,9 @@ final class ListService {
 // MARK: ListServiceProtocol
 extension ListService: ListServiceProtocol {
     
-    func allCharacters(page: Int, completion: @escaping (Result<ListModel, ServiceError>) -> Void) {
+    func characters(page: Int?, name: String?, completion: @escaping (Result<ListModel, ServiceError>) -> Void) {
         
-        client.request(endpoint: .listCharacters(page: page)) { [weak self] (result: Result<Data, Error>) in
+        client.request(endpoint: .characters(page: page, name: name)) { [weak self] (result: Result<Data, Error>) in
             
             guard let self = self else { return }
             

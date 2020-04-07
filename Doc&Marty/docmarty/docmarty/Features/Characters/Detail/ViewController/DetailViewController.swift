@@ -56,7 +56,7 @@ final class DetailViewController: UIViewController {
     private func setupView() {
         view.backgroundColor = .backgroundPrimary
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor : UIColor.labelPrimary]
-        navigationController?.navigationBar.barTintColor = .backgroundSecondary
+        navigationController?.navigationBar.barTintColor = .backgroundPrimary
         navigationController?.navigationBar.tintColor = .labelPrimary
         
         imageView.contentMode = .scaleAspectFill

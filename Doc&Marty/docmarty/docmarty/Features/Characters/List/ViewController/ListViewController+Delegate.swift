@@ -24,3 +24,24 @@ extension ListViewController: UICollectionViewDelegate {
         viewModel.willDisplayCell(at: indexPath)
     }
 }
+
+// MARK: UISearchBarDelegate
+extension ListViewController: UISearchBarDelegate {
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        
+        if searchText.isEmpty {
+            viewModel.resetFilterStatus()
+        }
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        
+        guard let text = searchBar.text else { return }
+        viewModel.searchForCharacter(withName: text)
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        viewModel.resetFilterStatus()
+    }
+}

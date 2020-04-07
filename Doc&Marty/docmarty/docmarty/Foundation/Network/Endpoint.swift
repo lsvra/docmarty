@@ -14,7 +14,7 @@ protocol URLBuilder {
 
 enum Endpoint {
     
-    case listCharacters(page: Int)
+    case characters(page: Int?, name: String?)
     
     private var scheme: String {
         return "https"
@@ -26,7 +26,7 @@ enum Endpoint {
     
     private var path: String {
         switch self {
-        case .listCharacters:
+        case .characters:
             return "/api/character/"
         }
     }
@@ -34,8 +34,19 @@ enum Endpoint {
     private var queryItems: [URLQueryItem]? {
         
         switch self {
-        case .listCharacters(let page):
-            return [URLQueryItem(name: "page", value: page.description)]
+        case .characters(let page, let name):
+            
+            var queryItems: [URLQueryItem] = []
+            
+            if let page = page {
+                queryItems.append(URLQueryItem(name: "page", value: page.description))
+            }
+
+            if let name = name {
+                queryItems.append(URLQueryItem(name: "name", value: name))
+            }
+            
+            return queryItems
         }
     }
 }

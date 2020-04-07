@@ -9,7 +9,7 @@
 import Foundation
 
 protocol ListRequestAdapterProtocol {
-    func allCharacters(page: Int, completion: @escaping (Result<ListData, ServiceError>) -> Void)
+    func characters(page: Int?, name: String?, completion: @escaping (Result<ListData, ServiceError>) -> Void)
 }
 
 final class ListRequestAdapter {
@@ -57,9 +57,9 @@ final class ListRequestAdapter {
 // MARK: ListRequestAdapterProtocol
 extension ListRequestAdapter: ListRequestAdapterProtocol {
     
-    func allCharacters(page: Int, completion: @escaping (Result<ListData, ServiceError>) -> Void) {
+    func characters(page: Int?, name: String?, completion: @escaping (Result<ListData, ServiceError>) -> Void) {
         
-        service.allCharacters(page: page) { [weak self] (result: Result<ListModel, ServiceError>) in
+        service.characters(page: page, name: name) { [weak self] (result: Result<ListModel, ServiceError>) in
             
             guard let self = self else { return }
             

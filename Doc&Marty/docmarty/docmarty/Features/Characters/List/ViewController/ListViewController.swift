@@ -16,8 +16,19 @@ final class ListViewController: UIViewController {
     // MARK: Properties
     var viewModel: ListViewModel
     
+    private lazy var searchController: UISearchController = {
+        
+        let searchController = UISearchController(searchResultsController: nil)
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.delegate = self
+        searchController.searchBar.tintColor = .labelPrimary
+        
+        return searchController
+    }()
+    
     // MARK: Lifecycle
     init(viewModel: ListViewModel) {
+        
         self.viewModel = viewModel
         super.init(nibName: nil,
                    bundle: Bundle(for: ListViewController.self))
@@ -39,9 +50,13 @@ final class ListViewController: UIViewController {
     
     // MARK: Methods
     private func setupView() {
+        
         view.backgroundColor = .backgroundPrimary
+        
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor : UIColor.labelPrimary]
-        navigationController?.navigationBar.barTintColor = .backgroundSecondary
+        navigationController?.navigationBar.barTintColor = .backgroundPrimary
+        
+        navigationItem.searchController = searchController
     }
     
     private func setUpCollectionView() {
@@ -52,7 +67,7 @@ final class ListViewController: UIViewController {
         
         collectionView.register(cell: ListCell.self)
     }
-
+    
     private func setupBindings() {
         
         let onTitleLoaded = { [weak self] (title: String) in

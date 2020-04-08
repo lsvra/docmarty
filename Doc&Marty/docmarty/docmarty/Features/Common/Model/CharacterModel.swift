@@ -9,6 +9,7 @@
 import Foundation
 
 struct CharacterModel: Decodable {
+    
     let name: String
     let gender: String
     let image: String

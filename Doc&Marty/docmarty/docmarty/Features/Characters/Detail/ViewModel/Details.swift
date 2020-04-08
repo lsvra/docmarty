@@ -9,6 +9,7 @@
 import Foundation
 
 struct DetailItemData {
+    
     let imageURL: URL?
     let name: String
     let gender: String
@@ -24,6 +25,7 @@ struct DetailData {
 }
 
 struct Details {
+    
     let imageURL: URL?
     let name: String
     let gender: String

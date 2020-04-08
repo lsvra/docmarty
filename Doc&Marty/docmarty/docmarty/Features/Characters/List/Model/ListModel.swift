@@ -9,6 +9,7 @@
 import Foundation
 
 struct ListModel: Decodable {
+    
     let info: InfoModel
     let results: [CharacterModel]
 }

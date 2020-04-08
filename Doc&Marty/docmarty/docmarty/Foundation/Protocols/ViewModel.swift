@@ -7,6 +7,7 @@
 //
 
 protocol ViewModel {
+    
     associatedtype Dependencies
     associatedtype Bindings
     

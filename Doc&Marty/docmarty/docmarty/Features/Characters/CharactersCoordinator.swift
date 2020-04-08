@@ -9,7 +9,7 @@
 import UIKit
 
 protocol CharactersCoordinatorDelegate: class {
-     func openDetail(withData data: DetailItemData)
+    func openDetail(withData data: DetailItemData)
 }
 
 final class CharactersCoordinator {
@@ -42,7 +42,7 @@ final class CharactersCoordinator {
     }
     
     // MARK: Methods
-    private func detailViewController(withData data: DetailItemData) -> UIViewController{
+    private func detailViewController(withData data: DetailItemData) -> UIViewController {
         let client = APIClient(withSession: .shared)
         let decoder = JSONDecoder()
         
@@ -73,7 +73,7 @@ extension CharactersCoordinator: Coordinator {
 
 // MARK: CharactersCoordinatorDelegate
 extension CharactersCoordinator: CharactersCoordinatorDelegate {
-   
+    
     func openDetail(withData data: DetailItemData) {
         
         let viewController = detailViewController(withData: data)

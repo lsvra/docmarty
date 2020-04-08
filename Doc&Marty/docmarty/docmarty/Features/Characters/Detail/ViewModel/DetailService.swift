@@ -42,7 +42,7 @@ extension DetailService: DetailServiceProtocol {
                     else { return }
                 
                 completion(.success(model))
-            
+                
             case .failure:
                 completion(.failure(ServiceError.unknownError))
                 return

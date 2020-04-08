@@ -13,6 +13,7 @@ protocol CellConfigurator {
 }
 
 struct Configurator<T: ConfigurableCell>: CellConfigurator where T: UICollectionViewCell {
+    
     let item: T.ViewModel
     
     init(item: T.ViewModel) {
@@ -20,6 +21,7 @@ struct Configurator<T: ConfigurableCell>: CellConfigurator where T: UICollection
     }
     
     func cell(in collectionView: UICollectionView, indexPath: IndexPath) -> UICollectionViewCell {
+        
         let cell: T = collectionView.dequeue(T.self, atIndexPath: indexPath)
         cell.configure(viewModel: item)
         return cell

@@ -31,7 +31,7 @@ final class ListRequestAdapter {
         }
         
         let detailItems = data.results.map { character -> DetailItemData in
-          
+            
             let imageURL = URL(string: character.image)
             
             var locationURL: URL?

@@ -7,6 +7,7 @@
 //
 
 protocol ConfigurableCell {
+    
     associatedtype ViewModel
     func configure(viewModel: ViewModel)
 }

@@ -9,6 +9,7 @@
 import Foundation
 
 struct LocationModel: Decodable {
+    
     let name: String
     let type: String?
     let url: String?

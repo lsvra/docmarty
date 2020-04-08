@@ -14,7 +14,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: Properties
     var window: UIWindow?
     private var coordinator: AppCoordinator?
-
+    
     // MARK: Lifecycle
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {

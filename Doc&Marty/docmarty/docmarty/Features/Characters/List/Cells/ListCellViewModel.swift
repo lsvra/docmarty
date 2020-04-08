@@ -7,10 +7,9 @@
 //
 
 import UIKit
-import Kingfisher
 
 final class ListCellViewModel: ConfigurableItem {
-
+    
     let title: String
     let imageURL: URL?
     

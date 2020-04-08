@@ -26,7 +26,7 @@ final class GenericCollectionViewLayout: UICollectionViewLayout {
     
     // The array of attributes for each one of the UI elements
     private var cache = [UICollectionViewLayoutAttributes]()
-
+    
     // The offsets used for positioning one element after another, both horizontally and vertically
     private var xOffsets = [CGFloat]()
     private var yOffsets = [CGFloat]()
@@ -127,7 +127,7 @@ final class GenericCollectionViewLayout: UICollectionViewLayout {
     
     private func createFrame(withHeight height: CGFloat,
                              andWidth width: CGFloat) -> CGRect {
-
+        
         let frame = CGRect(x: xOffsets[currentColumn],
                            y: yOffsets[currentColumn],
                            width: width,

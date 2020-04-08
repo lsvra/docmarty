@@ -41,7 +41,7 @@ enum Endpoint {
             if let page = page {
                 queryItems.append(URLQueryItem(name: "page", value: page.description))
             }
-
+            
             if let name = name {
                 queryItems.append(URLQueryItem(name: "name", value: name))
             }

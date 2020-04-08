@@ -7,6 +7,7 @@
 //
 
 struct ListData {
+    
     let items: [ConfigurableItem]
     let detailItems: [DetailItemData]
     let totalPages: Int

@@ -8,7 +8,7 @@
 
 import UIKit
 
-final class AppCoordinator: Coordinator {
+final class AppCoordinator {
     
     // MARK: Properties
     private let window: UIWindow
@@ -17,22 +17,25 @@ final class AppCoordinator: Coordinator {
     
     // MARK: Lifecycle
     init(window: UIWindow) {
+        
         self.window = window
         self.rootViewController = UINavigationController()
         self.children = []
     }
+}
+
+// MARK: Coordinator
+extension AppCoordinator: Coordinator {
     
     func start() {
+        
         window.rootViewController = rootViewController
         window.makeKeyAndVisible()
         openList()
     }
-}
-
-// MARK: Navigation
-extension AppCoordinator {
     
-    private func openList(){
+    private func openList() {
+        
         let charactersCoordinator = CharactersCoordinator(navigation: rootViewController)
         children.append(charactersCoordinator)
         charactersCoordinator.start()

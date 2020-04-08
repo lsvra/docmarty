@@ -24,6 +24,8 @@
 		9570ECCE243ABC9300D65AC9 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9570ECCD243ABC9300D65AC9 /* String+Extension.swift */; };
 		9570ECD0243ABFDE00D65AC9 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9570ECCF243ABFDE00D65AC9 /* UIViewController+Extension.swift */; };
 		9570ECD2243ACCBB00D65AC9 /* ListData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9570ECD1243ACCBB00D65AC9 /* ListData.swift */; };
+		9587CB24243D5F4900F8B1EB /* ListViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9587CB23243D5F4900F8B1EB /* ListViewModelTests.swift */; };
+		9587CB29243D608A00F8B1EB /* FakeListRequestAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9587CB28243D608A00F8B1EB /* FakeListRequestAdapter.swift */; };
 		958D0610243CE021003C6776 /* NetworkObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 958D060F243CE021003C6776 /* NetworkObserver.swift */; };
 		958D0612243CE08B003C6776 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 958D0611243CE08B003C6776 /* Reachability.swift */; };
 		958D0615243CED29003C6776 /* OfflineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 958D0614243CED29003C6776 /* OfflineView.swift */; };
@@ -104,6 +106,8 @@
 		9570ECCD243ABC9300D65AC9 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		9570ECCF243ABFDE00D65AC9 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		9570ECD1243ACCBB00D65AC9 /* ListData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListData.swift; sourceTree = "<group>"; };
+		9587CB23243D5F4900F8B1EB /* ListViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewModelTests.swift; sourceTree = "<group>"; };
+		9587CB28243D608A00F8B1EB /* FakeListRequestAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeListRequestAdapter.swift; sourceTree = "<group>"; };
 		958D060F243CE021003C6776 /* NetworkObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkObserver.swift; sourceTree = "<group>"; };
 		958D0611243CE08B003C6776 /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		958D0614243CED29003C6776 /* OfflineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineView.swift; sourceTree = "<group>"; };
@@ -186,6 +190,23 @@
 				958D0611243CE08B003C6776 /* Reachability.swift */,
 			);
 			path = Network;
+			sourceTree = "<group>";
+		};
+		9587CB21243D5F1700F8B1EB /* CharactersTests */ = {
+			isa = PBXGroup;
+			children = (
+				9587CB25243D605C00F8B1EB /* FakeData */,
+				9587CB23243D5F4900F8B1EB /* ListViewModelTests.swift */,
+			);
+			path = CharactersTests;
+			sourceTree = "<group>";
+		};
+		9587CB25243D605C00F8B1EB /* FakeData */ = {
+			isa = PBXGroup;
+			children = (
+				9587CB28243D608A00F8B1EB /* FakeListRequestAdapter.swift */,
+			);
+			path = FakeData;
 			sourceTree = "<group>";
 		};
 		958D0618243CED62003C6776 /* OfflineView */ = {
@@ -283,6 +304,7 @@
 		95B1B0782438E633007CF93D /* docmartyTests */ = {
 			isa = PBXGroup;
 			children = (
+				9587CB21243D5F1700F8B1EB /* CharactersTests */,
 				95B1B07B2438E633007CF93D /* Info.plist */,
 			);
 			path = docmartyTests;
@@ -479,6 +501,7 @@
 					};
 					95B1B0742438E633007CF93D = {
 						CreatedOnToolsVersion = 11.4;
+						LastSwiftMigration = 1140;
 						TestTargetID = 95B1B05E2438E631007CF93D;
 					};
 				};
@@ -587,6 +610,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9587CB29243D608A00F8B1EB /* FakeListRequestAdapter.swift in Sources */,
+				9587CB24243D5F4900F8B1EB /* ListViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -767,6 +792,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3BD45ZFG26;
 				INFOPLIST_FILE = docmartyTests/Info.plist;
@@ -778,9 +804,11 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.lsvra.docmartyTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/docmarty.app/docmarty";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Doc&Marty.app/Doc&Marty";
 			};
 			name = Debug;
 		};
@@ -789,6 +817,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3BD45ZFG26;
 				INFOPLIST_FILE = docmartyTests/Info.plist;
@@ -800,9 +829,10 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.lsvra.docmartyTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/docmarty.app/docmarty";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Doc&Marty.app/Doc&Marty";
 			};
 			name = Release;
 		};

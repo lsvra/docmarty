@@ -45,6 +45,15 @@ private extension ListCell {
     
     func setupCell() {
         
+        let gradient = CAGradientLayer()
+        gradient.frame = contentView.frame
+        gradient.colors = [UIColor.clear.cgColor,
+                           UIColor.clear.cgColor,
+                           UIColor.black.withAlphaComponent(0.2).cgColor,
+                           UIColor.black.withAlphaComponent(0.4).cgColor]
+        
+        contentView.layer.insertSublayer(gradient, at: 1)
+        
         contentView.layer.cornerRadius = Constants.Layout.cornerRadius
         contentView.layer.masksToBounds = true
         
@@ -52,6 +61,12 @@ private extension ListCell {
         titleLabel.textColor = .labelSecondary
         
         imageView.contentMode = .scaleAspectFill
+    }
+    
+    private func updateLayerBounds() {
+        
+        let gradient = contentView.layer.sublayers?.first(where: {$0 is CAGradientLayer })
+        gradient?.frame = contentView.frame
     }
 }
 
@@ -68,6 +83,8 @@ extension ListCell: ConfigurableCell {
         imageView.kf.setImage(with: viewModel.imageURL,
                               placeholder: UIImage.placeholder,
                               options: [.transition(.fade(Constants.Animation.fadeInTime))])
-
+        
+        layoutIfNeeded()
+        updateLayerBounds()
     }
 }

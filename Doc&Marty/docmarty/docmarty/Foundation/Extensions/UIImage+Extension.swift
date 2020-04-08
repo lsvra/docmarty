@@ -11,7 +11,7 @@ import UIKit
 extension UIImage {
     
     static var placeholder: UIImage {
-        return UIImage(named: "Placeholder")!
+        return UIImage(named: "placeholder")!
     }
     
     static var offlineIcon: UIImage {
